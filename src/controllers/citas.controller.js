@@ -35,55 +35,25 @@ const getDateByDay = async (req, res) =>{
 
 const getDateById = async (req, res) => {
 
-    try {
-
-        const { id } = req.params
-
-        const connection = await db.createConnection()
-
-        const [row] = await connection.execute('select * from citas where id = ?', [id])
-        connection.end()
-
-        res.status(200).json({
-            message: 'cita encontrado con exito',
-            tratamiento: row[0]
-        })
-
-
-    } catch (error) {
-
-        console.log(error)
-
-        res.status(500).json({
-            message: 'error al intentar encontrar cita por id',
-            error: error.message
-        })
-    }
-
 }
 
 const createDate = async (req, res) => {
 
     try{
 
-        const { fecha, hora, usuarioId, tratamientoId } = req.body
+        const { fecha, hora, usuarioId } = req.body
 
         const newDate = {
-            id: crypto.randomUUID(),    
+            id: crypto.randomUUID(),
             fecha,
             hora,
-            usuarioId,
-            tratamientoId
+            usuarioId
         }
-
-        console.log(newDate)
 
         const connection = await db.createConnection()
 
         await connection.execute('insert into citas values (?, ?, ?, ?) ', [newDate.id, newDate.fecha, newDate.hora, newDate.usuarioId])
-        
-        await connection.execute('insert into "trata-citas" values (?, ?)', [newDate.id, newDate.tratamientoId])
-        
+        connection.end()
 
         res.status(201).json({
             message: 'la cita se agendo exitosamente',

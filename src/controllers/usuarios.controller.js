@@ -8,7 +8,7 @@ const index = async (req, res) =>{
 
         const connection = await db.createConnection()
 
-        const [rows] = await connection.execute('select * from usuario')
+        const [rows] = await connection.query('select * from usuario')
         connection.end()
 
         res.status(200).json({
@@ -62,45 +62,7 @@ const createUser = async (req, res) => {
     
 }
 
-const userAuthentication = async (req, res) =>{
-
-    try {
-
-        const { telefono } = req.params
-
-        const connection = await db.createConnection()
-
-        const [rows] = await connection.execute('select * from usuario where telefono = ?', [telefono])
-        connection.end()
-
-        if(rows.length == 0){
-            res.status(401).json({
-                message: 'telefono invalido',
-                success: false
-            })
-        } else {
-
-            res.status(200).json({
-                message: 'usuario autenticado correctamente',
-                success: true,
-                userId: rows[0].id,
-                name: rows[0].nombre
-            })
-        }
-
-    } catch (error){
-
-        console.log(error)
-
-        res.status(500).json({
-            message: 'error al obtener los usuarios',
-            error: error.message
-        })
-    }
-}
-
 module.exports = {
     index,
-    createUser,
-    userAuthentication
+    createUser
 }

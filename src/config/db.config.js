@@ -5,11 +5,10 @@ const config = {
     host: process.env.HOST,
     user: process.env.USER,
     password: process.env.PASSWORD,
-    database: process.env.DATABASE,
-    connectionLimit: process.env.CONNECTION_LIMIT,
+    database: process.env.DATABASE
 }
 
-const createConnection = async () => await mysql.createPool(config)
+const createConnection = async () => await mysql.createConnection(config)
 
 module.exports = {
     createConnection
