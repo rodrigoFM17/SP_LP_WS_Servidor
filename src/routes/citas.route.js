@@ -3,8 +3,11 @@ const router = express.Router()
 
 const citasController = require('../controllers/citas.controller')
 
+router.get('/', citasController.index)
 router.get('/:anio/:mes/:dia', citasController.getDateByDay)
-router.get('/:id', citasController.getDateById)
+
+router.get('/update', citasController.updateDate)
 router.post('/', citasController.createDate)
+router.get('/:year/:month', citasController.getDateByMonth)
 
 module.exports = router
